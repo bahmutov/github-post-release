@@ -23,10 +23,17 @@ function getGitHub (githubUrl, token) {
     throw new Error('Missing gh token')
   }
   const githubConfig = githubUrl ? url.parse(githubUrl) : {}
+
+  let protocol = (githubConfig.protocol || '').split(':')[0] || null
+  if (protocol === 'git+https') {
+    debug('switching github protocol from %s to https', protocol)
+    protocol = 'https'
+  }
+
   const config = {
     version: '3.0.0',
     port: githubConfig.port,
-    protocol: (githubConfig.protocol || '').split(':')[0] || null,
+    protocol,
     host: githubConfig.hostname
   }
   debug('github config')
