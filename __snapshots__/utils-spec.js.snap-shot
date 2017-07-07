@@ -12,5 +12,5 @@ exports['forms url 1'] = "https://github.com/bahmutov/github-post-release/releas
 
 exports['forms release text 1'] = "github-post-release/releases/tag/v1.4.0"
 
-exports['forms full message 1'] = "Version `1.4.0` has been published to NPM. The full\nrelease note can be found at [repo/releases/tag/v1.4.0](https://github.com/user/repo/releases/tag/v1.4.0).\n\n**Tip:** safely upgrade dependency my-module-name in your project using [next-update](https://github.com/bahmutov/next-update)"
+exports['forms full message 1'] = "Version `1.4.0` has been published to NPM. The full release note can be found at [repo/releases/tag/v1.4.0](https://github.com/user/repo/releases/tag/v1.4.0).\n\n**Tip:** safely upgrade dependency my-module-name in your project using [next-update](https://github.com/bahmutov/next-update)"
 

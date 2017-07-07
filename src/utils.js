@@ -48,8 +48,7 @@ function formMessage (owner, repo, name, version) {
   const releaseUrl = formReleaseUrl(owner, repo, vTag)
   const nextUpdateUrl = 'https://github.com/bahmutov/next-update'
   const message = stripIndent`
-    Version \`${version}\` has been published to NPM. The full
-    release note can be found at [${releaseText}](${releaseUrl}).
+    Version \`${version}\` has been published to NPM. The full release note can be found at [${releaseText}](${releaseUrl}).
 
     **Tip:** safely upgrade dependency ${name} in your project using [next-update](${nextUpdateUrl})
   `
