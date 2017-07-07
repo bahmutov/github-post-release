@@ -1,14 +1,15 @@
 'use strict'
 
-var bluebird = require('bluebird')
-var url = require('url')
-var GitHubApi = require('github')
-var parseGithubUrl = require('parse-github-repo-url')
-var debug = require('debug')('github-post-release')
+const bluebird = require('bluebird')
+const url = require('url')
+const GitHubApi = require('github')
+const parseGithubUrl = require('parse-github-repo-url')
+const debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
 const commitCloses = require('commit-closes')
 const { uniq, partial, identity } = require('ramda')
 const pluralize = require('pluralize')
+const path = require('path')
 
 function commitToIsses (commit) {
   return commitCloses(commit.message, commit.body)
@@ -19,7 +20,11 @@ function hasIssues (issues) {
 }
 
 function issuesToCommits (commits) {
-  debug('have %d semantic commits', commits.length)
+  debug(
+    'have %d semantic %s',
+    commits.length,
+    pluralize('commit', commits.length)
+  )
   if (!commits.length) {
     return []
   }
@@ -120,3 +125,18 @@ function githubPostRelease (pluginConfig, config, callback) {
 }
 
 module.exports = githubPostRelease
+
+if (!module.parent) {
+  console.log('demo run')
+  githubPostRelease(
+    {},
+    {
+      pkg: require(path.join(__dirname, '..', 'package.json'))
+    },
+    (err, changelog) => {
+      console.log('finished with')
+      console.log('err?', err)
+      console.log('changelog\n' + changelog)
+    }
+  )
+}
