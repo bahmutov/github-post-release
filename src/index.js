@@ -141,7 +141,7 @@ function githubPostRelease (pluginConfig, config, callback) {
     ).then(buffer => buffer.toString())
   }
 
-  const message = `Version ${pkg.version} has been published.`
+  const message = `Version \`${pkg.version}\` has been published to NPM.`
   getClosedIssues()
     .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
     .catch(commentingFailed)
