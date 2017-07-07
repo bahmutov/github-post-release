@@ -10,6 +10,8 @@ const commitCloses = require('commit-closes')
 const { uniq, partial, identity, is, path, flatten } = require('ramda')
 const pluralize = require('pluralize')
 const join = require('path').join
+const streamToPromise = require('stream-to-promise')
+const changelog = require('conventional-changelog')
 
 function commitToIsses (commit) {
   return commitCloses(commit.message, commit.body)
@@ -104,13 +106,16 @@ function githubPostRelease (pluginConfig, config, callback) {
   // debug('config parameter', config)
   const pkg = config.pkg
   const repoUrl = pkg.repository.url
+  const parsedRepo = parseGithubUrl(repoUrl)
 
   debug('published version %s', pkg.version)
   debug('repo url %s', repoUrl)
 
-  const onSuccess = () => {
+  const onSuccess = changelog => {
     debug('✅  all done, with message: %s', message)
-    callback()
+    debug('changelog:')
+    debug(changelog)
+    callback(null, changelog)
   }
 
   const onFailure = err => {
@@ -124,10 +129,22 @@ function githubPostRelease (pluginConfig, config, callback) {
     console.error(err)
   }
 
+  const generateChangeLog = () => {
+    debug('generate changelog')
+    return streamToPromise(
+      changelog({
+        version: pkg.version,
+        repository: parsedRepo,
+        fail: false
+      })
+    ).then(buffer => buffer.toString())
+  }
+
   const message = `Version ${pkg.version} has been published.`
   getClosedIssues()
     .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
     .catch(commentingFailed)
+    .then(generateChangeLog)
     .then(onSuccess, onFailure)
 }
 
