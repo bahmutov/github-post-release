@@ -7,10 +7,8 @@ var parseGithubUrl = require('parse-github-repo-url')
 var debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
 const commitCloses = require('commit-closes')
-const {uniq, partial} = require('ramda')
+const {uniq, partial, identity} = require('ramda')
 const pluralize = require('pluralize')
-
-module.exports = githubNotifier
 
 function commitToIsses (commit) {
   return commitCloses(commit.message, commit.body)
@@ -59,11 +57,15 @@ function getGitHub (githubUrl, token) {
     token: token
   })
 
-  var createComment = bluebird.promisify(github.issues.createComment)
+  const createComment = bluebird.promisify(github.issues.createComment)
   return createComment
 }
 
-function commentOnIssues (repoUrl, createComment, message, issues) {
+function getGitHubToken () {
+  return process.env.GH_TOKEN
+}
+
+function commentOnIssues (repoUrl, message, debug, issues) {
   if (!issues) {
     return Promise.resolve()
   }
@@ -71,6 +73,7 @@ function commentOnIssues (repoUrl, createComment, message, issues) {
     return Promise.resolve()
   }
 
+  const createComment = debug ? identity : getGitHub(repoUrl, getGitHubToken())
   const parsed = parseGithubUrl(repoUrl)
   const user = parsed[0]
   const repo = parsed[1]
@@ -88,13 +91,15 @@ function commentOnIssues (repoUrl, createComment, message, issues) {
   return bluebird.all(commentPromises)
 }
 
-function githubNotifier (pluginConfig, config, callback) {
-  // debug('plugin config', pluginConfig)
-  // debug('pkg', config.pkg)
+// should call "callback" function with (err, changelog)
+function githubPostRelease (pluginConfig, config, callback) {
+  // debug('custom plugin config', pluginConfig)
+  debug('config parameter', config)
+  const pkg = config.pkg
+  const repoUrl = pkg.repository.url
 
-  const repoUrl = config.pkg.repository.url
-  const createComment = getGitHub(repoUrl, process.env.GH_TOKEN)
-  const message = `Version ${config.pkg.version} has been published.`
+  debug('published version %s', pkg.version)
+  debug('repo url %s', repoUrl)
 
   const onSuccess = () => {
     debug('✅  all done, with message: %s', message)
@@ -107,63 +112,10 @@ function githubNotifier (pluginConfig, config, callback) {
     callback(err)
   }
 
+  const message = `Version ${pkg.version} has been published.`
   getClosedIssues()
-    .then(partial(commentOnIssues, [repoUrl, createComment, message]))
+    .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
     .then(onSuccess, onFailure)
-
-  // newCommits()
-  //   .then(function (commits) {
-  //     debug('have %d semantic commits', commits.length)
-  //     if (!commits.length) {
-  //       console.log('no commits')
-  //       return callback()
-  //     }
-
-  //     const closedIssues = commits.map(commitToIsses)
-  //       .filter(hasIssues)
-  //     console.log('semantic commits close the following issues')
-  //     console.log(closedIssues)
-  //     const uniqueIssues = uniq(closedIssues)
-  //     console.log('unique closed issues', uniqueIssues)
-  //     if (!uniqueIssues.length) {
-  //       return callback()
-  //     }
-
-  //     // should it be pkg or repo url?
-  //       var parsedGithubUrl = parseGithubUrl(config.pkg.repository.url);
-  //       commitParser(commits)
-  //         .pipe(through.obj(function (commit, enc, cb) {
-  //           debug('notifying for commit %j', commit);
-  //           var commentPromises = _.map(commit.references, function (reference) {
-  //             debug('commit involves issue reference %j', reference);
-  //             var msg = {
-  //               user: parsedGithubUrl[0],
-  //               repo: parsedGithubUrl[1],
-  //               number: reference.issue,
-  //               message: 'Version ' + config.pkg.version + ' has been published.',
-  //             };
-
-  //             // return createComment(msg);
-  //             return bluebird.resolve()
-  //           });
-
-  //           bluebird.all(commentPromises)
-  //             .then(function () {
-  //               debug('all done')
-  //               cb(null, commit);
-  //             })
-  //             .catch(function (err) {
-  //               cb(err);
-  //             });
-  //         }))
-  //         .on('error', function () {
-  //           callback(false);
-  //         })
-  //         .on('finish', function () {
-  //           callback(true);
-  //         });
-  //   }).catch(console.error)
-
-  debug('parsing repo url %s', config.pkg.repository.url)
-  debug('for published version %s', config.pkg.version)
 }
+
+module.exports = githubPostRelease
