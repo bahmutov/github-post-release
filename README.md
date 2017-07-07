@@ -16,18 +16,12 @@ know that the fix / feature was published.
 
 This module works as a [semantic-release][sem] [generate notes][gen] plugin.
 It both comments on referenced issues and returns the changelog to be
-posted on GitHub
+posted on GitHub. Each issue will get a comment like this
 
-It was inspired by [semantic-release-github-notifier][notifier],
-[release-notes-generator][notes-generator] and uses
-[conventional-changelog][conventional-changelog] to generate changelog text
-after commenting on issues.
+![Typical comment](images/comment.png)
 
 [sem]: https://github.com/semantic-release/semantic-release
 [gen]: https://github.com/semantic-release/semantic-release#generatenotes
-[notifier]: https://github.com/gitter-badger/semantic-release-github-notifier
-[notes-generator]: https://github.com/semantic-release/release-notes-generator/
-[conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog#readme
 
 ## Install and use
 
@@ -52,6 +46,17 @@ Then tell `semantic-release` to use this module as `generateNotes` plugin.
 To see more log messages, run this plugin with `DEBUG=github-post-release`
 flag. You can even demo the plugin locally (without actual GitHub updates)
 using `npm run demo`.
+
+## Related
+
+It was inspired by [semantic-release-github-notifier][notifier],
+[release-notes-generator][notes-generator] and uses
+[conventional-changelog][conventional-changelog] to generate changelog text
+after commenting on issues.
+
+[notifier]: https://github.com/gitter-badger/semantic-release-github-notifier
+[notes-generator]: https://github.com/semantic-release/release-notes-generator/
+[conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog#readme
 
 ### Small print
 
