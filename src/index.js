@@ -11,8 +11,7 @@ const pluralize = require('pluralize')
 const join = require('path').join
 const streamToPromise = require('stream-to-promise')
 const changelog = require('conventional-changelog')
-const { stripIndent } = require('common-tags')
-const { commitsToIssues, formReleaseText, formReleaseUrl } = require('./utils')
+const { commitsToIssues, formMessage } = require('./utils')
 
 // :: -> [issue numbers]
 function getClosedIssues () {
@@ -144,16 +143,8 @@ function githubPostRelease (pluginConfig, config, callback) {
 
   const owner = parsedRepo[0]
   const repo = parsedRepo[1]
-  const vTag = `v${pkg.version}`
-  const releaseText = formReleaseText(repo, vTag)
-  const releaseUrl = formReleaseUrl(owner, repo, vTag)
-  const nextUpdateUrl = 'https://github.com/bahmutov/next-update'
-  const message = stripIndent`
-    Version \`${pkg.version}\` has been published to NPM. The full
-    release note can be found at [${releaseText}](${releaseUrl}).
+  const message = formMessage(owner, repo, pkg.name, pkg.version)
 
-    **Tip:** safely upgrade dependency ${pkg.name} in your project using [next-update](${nextUpdateUrl})
-  `
   getClosedIssues()
     .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
     .catch(commentingFailed)

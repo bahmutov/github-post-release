@@ -20,6 +20,14 @@ describe('utils', () => {
     })
   })
 
+  describe('formMessage', () => {
+    const { formMessage } = require('./utils')
+
+    it('forms full message', () => {
+      snapshot(formMessage('user', 'repo', 'my-module-name', '1.4.0'))
+    })
+  })
+
   describe('commitsToIssues', () => {
     const { commitsToIssues } = require('./utils')
 

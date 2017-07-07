@@ -2,6 +2,8 @@ const debug = require('debug')('github-post-release')
 const { uniq, flatten } = require('ramda')
 const commitCloses = require('commit-closes')
 const pluralize = require('pluralize')
+const { stripIndent } = require('common-tags')
+const la = require('lazy-ass')
 
 function hasIssues (issues) {
   return issues.length > 0
@@ -38,8 +40,25 @@ function formReleaseText (repo, tag) {
   return `${repo}/releases/tag/${tag}`
 }
 
+function formMessage (owner, repo, name, version) {
+  la(arguments.length === 4, 'invalid arguments', arguments)
+
+  const vTag = `v${version}`
+  const releaseText = formReleaseText(repo, vTag)
+  const releaseUrl = formReleaseUrl(owner, repo, vTag)
+  const nextUpdateUrl = 'https://github.com/bahmutov/next-update'
+  const message = stripIndent`
+    Version \`${version}\` has been published to NPM. The full
+    release note can be found at [${releaseText}](${releaseUrl}).
+
+    **Tip:** safely upgrade dependency ${name} in your project using [next-update](${nextUpdateUrl})
+  `
+  return message
+}
+
 module.exports = {
   commitsToIssues,
   formReleaseUrl,
-  formReleaseText
+  formReleaseText,
+  formMessage
 }
