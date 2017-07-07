@@ -30,6 +30,16 @@ function commitsToIssues (commits) {
   return uniqueIssues
 }
 
+function formReleaseUrl (user, repo, tag) {
+  return `https://github.com/${user}/${repo}/releases/tag/${tag}`
+}
+
+function formReleaseText (repo, tag) {
+  return `${repo}/releases/tag/${tag}`
+}
+
 module.exports = {
-  commitsToIssues
+  commitsToIssues,
+  formReleaseUrl,
+  formReleaseText
 }

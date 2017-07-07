@@ -12,7 +12,7 @@ const join = require('path').join
 const streamToPromise = require('stream-to-promise')
 const changelog = require('conventional-changelog')
 const { stripIndent } = require('common-tags')
-const { commitsToIssues } = require('./utils')
+const { commitsToIssues, formReleaseText, formReleaseUrl } = require('./utils')
 
 // :: -> [issue numbers]
 function getClosedIssues () {
@@ -142,9 +142,15 @@ function githubPostRelease (pluginConfig, config, callback) {
     ).then(buffer => buffer.toString())
   }
 
+  const owner = parsedRepo[0]
+  const repo = parsedRepo[1]
+  const vTag = `v${pkg.version}`
+  const releaseText = formReleaseText(repo, vTag)
+  const releaseUrl = formReleaseUrl(owner, repo, vTag)
   const nextUpdateUrl = 'https://github.com/bahmutov/next-update'
   const message = stripIndent`
-    Version \`${pkg.version}\` has been published to NPM.
+    Version \`${pkg.version}\` has been published to NPM. The full
+    release note can be found at [${releaseText}](${releaseUrl}).
 
     **Tip:** safely upgrade dependency ${pkg.name} in your project using [next-update](${nextUpdateUrl})
   `
