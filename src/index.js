@@ -79,7 +79,7 @@ function commentOnIssues (repoUrl, message, debugMode, issues) {
   }
 
   const commentPromises = issues.map(number =>
-    createComment({ owner, repo, number, message })
+    createComment({ owner, repo, number, body: message })
       .then(onPosted(number))
       .catch(onFailed(number))
   )
