@@ -28,6 +28,7 @@ function issuesToCommits (commits) {
   if (!commits.length) {
     return []
   }
+  debug(commits)
 
   const closedIssues = flatten(commits.map(commitToIsses).filter(hasIssues))
   debug('semantic commits close the following issues')
