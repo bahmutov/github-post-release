@@ -22,14 +22,17 @@ function getGitHub (githubUrl, token) {
   if (!token) {
     throw new Error('Missing gh token')
   }
-  var githubConfig = githubUrl ? url.parse(githubUrl) : {}
-
-  var github = new GitHubApi({
+  const githubConfig = githubUrl ? url.parse(githubUrl) : {}
+  const config = {
     version: '3.0.0',
     port: githubConfig.port,
     protocol: (githubConfig.protocol || '').split(':')[0] || null,
     host: githubConfig.hostname
-  })
+  }
+  debug('github config')
+  debug(config)
+
+  const github = new GitHubApi(config)
 
   github.authenticate({
     type: 'oauth',
@@ -57,7 +60,7 @@ function commentOnIssues (repoUrl, message, debugMode, issues) {
     ? identity
     : getGitHub(repoUrl, getGitHubToken())
   const parsed = parseGithubUrl(repoUrl)
-  const user = parsed[0]
+  const owner = parsed[0]
   const repo = parsed[1]
   debug(
     'commenting on %d %s: %j',
@@ -76,7 +79,7 @@ function commentOnIssues (repoUrl, message, debugMode, issues) {
   }
 
   const commentPromises = issues.map(number =>
-    createComment({ user, repo, number, message })
+    createComment({ owner, repo, number, message })
       .then(onPosted(number))
       .catch(onFailed(number))
   )
