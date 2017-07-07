@@ -32,7 +32,8 @@ Requires [Node](https://nodejs.org/en/) version 6 or above.
 npm install --save-dev github-post-release
 ```
 
-Then tell `semantic-release` to use this module as `generateNotes` plugin.
+The `postinstall` script will automatically set this module to be the
+`generateNotes` plugin for the release. If you want you can do this manually:
 
 ```json
 {

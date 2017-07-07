@@ -65,7 +65,8 @@
     "test": "npm run unit",
     "unit": "mocha src/*-spec.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "demo": "DEBUG=github-post-release node ."
+    "demo": "DEBUG=github-post-release node .",
+    "postinstall": "node src/postinstall.js"
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.0",
@@ -82,6 +83,7 @@
     "standard": "10.0.2"
   },
   "dependencies": {
+    "am-i-a-dependency": "1.0.0",
     "bluebird": "3.5.0",
     "commit-closes": "1.0.1",
     "common-tags": "1.4.0",
