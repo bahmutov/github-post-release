@@ -18,6 +18,12 @@ npm install --save github-post-release
 
 ## Use
 
+## Debug
+
+To see more log messages, run this plugin with `DEBUG=github-post-release`
+flag. You can even demo the plugin locally (without actual GitHub updates)
+using `npm run demo`.
+
 ### Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2017

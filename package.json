@@ -48,6 +48,9 @@
     "type": "git",
     "url": "https://github.com/bahmutov/github-post-release.git"
   },
+  "release": {
+    "generateNotes": "."
+  },
   "scripts": {
     "ban": "ban",
     "deps": "deps-ok && dependency-check --no-dev .",
@@ -61,7 +64,8 @@
     "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
     "test": "npm run unit",
     "unit": "mocha src/*-spec.js",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "demo": "DEBUG=github-post-release node ."
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.0",

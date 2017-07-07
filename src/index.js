@@ -7,9 +7,9 @@ const parseGithubUrl = require('parse-github-repo-url')
 const debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
 const commitCloses = require('commit-closes')
-const { uniq, partial, identity } = require('ramda')
+const { uniq, partial, identity, is, path, flatten } = require('ramda')
 const pluralize = require('pluralize')
-const path = require('path')
+const join = require('path').join
 
 function commitToIsses (commit) {
   return commitCloses(commit.message, commit.body)
@@ -29,7 +29,7 @@ function issuesToCommits (commits) {
     return []
   }
 
-  const closedIssues = commits.map(commitToIsses).filter(hasIssues)
+  const closedIssues = flatten(commits.map(commitToIsses).filter(hasIssues))
   debug('semantic commits close the following issues')
   debug(closedIssues)
   const uniqueIssues = uniq(closedIssues)
@@ -128,15 +128,12 @@ module.exports = githubPostRelease
 
 if (!module.parent) {
   console.log('demo run')
-  githubPostRelease(
-    {},
-    {
-      pkg: require(path.join(__dirname, '..', 'package.json'))
-    },
-    (err, changelog) => {
-      console.log('finished with')
-      console.log('err?', err)
-      console.log('changelog\n' + changelog)
-    }
-  )
+  const pkg = require(join(__dirname, '..', 'package.json'))
+  const generateNotes = path(['release', 'generateNotes'])(pkg)
+  const config = is(Object, generateNotes) ? generateNotes : {}
+  githubPostRelease(config, { pkg }, (err, changelog) => {
+    console.log('finished with')
+    console.log('err?', err)
+    console.log('changelog\n' + changelog)
+  })
 }
