@@ -8,6 +8,11 @@ node_js:
   - '6'
 before_script:
   - npm prune
+script:
+  - git --version
+  - git tag --sort version:refname || true
+  - git tag
+  - npm test
 after_success:
   - DEBUG=github-post-release npm run semantic-release
 branches:
