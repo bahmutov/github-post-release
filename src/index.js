@@ -6,7 +6,7 @@ const GitHubApi = require('github')
 const parseGithubUrl = require('parse-github-repo-url')
 const debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
-const { partial, identity, is, path } = require('ramda')
+const { partial, identity, is, path, isEmpty } = require('ramda')
 const pluralize = require('pluralize')
 const join = require('path').join
 const streamToPromise = require('stream-to-promise')
@@ -48,7 +48,8 @@ function commentOnIssues (repoUrl, message, debug, issues) {
   if (!issues) {
     return Promise.resolve()
   }
-  if (!issues.lenth) {
+  if (isEmpty(issues)) {
+    debug('no issues to comment on')
     return Promise.resolve()
   }
 
@@ -63,11 +64,19 @@ function commentOnIssues (repoUrl, message, debug, issues) {
     issues
   )
 
+  const onPosted = number => () => {
+    console.log('posted comment for issue', number)
+  }
+
+  const onFailed = number => err => {
+    console.error('Could not comment on issue', number)
+    console.error(err)
+  }
+
   const commentPromises = issues.map(number =>
-    createComment({ user, repo, number, message }).catch(err => {
-      console.error('Could not comment on issue', number)
-      console.error(err)
-    })
+    createComment({ user, repo, number, message })
+      .then(onPosted(number))
+      .catch(onFailed(number))
   )
 
   return bluebird.all(commentPromises)
