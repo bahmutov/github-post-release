@@ -1,6 +1,5 @@
 'use strict'
 
-
 /* global describe, it */
 const githubPostRelease = require('.')
 
