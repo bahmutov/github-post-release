@@ -84,6 +84,7 @@
   "dependencies": {
     "bluebird": "3.5.0",
     "commit-closes": "1.0.1",
+    "common-tags": "1.4.0",
     "conventional-changelog": "1.1.4",
     "debug": "2.6.8",
     "github": "9.2.0",

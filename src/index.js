@@ -11,6 +11,7 @@ const pluralize = require('pluralize')
 const join = require('path').join
 const streamToPromise = require('stream-to-promise')
 const changelog = require('conventional-changelog')
+const { stripIndent } = require('common-tags')
 const { commitsToIssues } = require('./utils')
 
 // :: -> [issue numbers]
@@ -141,7 +142,12 @@ function githubPostRelease (pluginConfig, config, callback) {
     ).then(buffer => buffer.toString())
   }
 
-  const message = `Version \`${pkg.version}\` has been published to NPM.`
+  const nextUpdateUrl = 'https://github.com/bahmutov/next-update'
+  const message = stripIndent`
+    Version \`${pkg.version}\` has been published to NPM.
+
+    **Tip:** safely upgrade dependency ${pkg.name} in your project using [next-update](${nextUpdateUrl})
+  `
   getClosedIssues()
     .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
     .catch(commentingFailed)
