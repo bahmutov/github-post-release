@@ -1,6 +1,6 @@
 {
   "name": "github-post-release",
-  "description": "Post GitHub changelog and close referenced issues after semantic release publishes new module version",
+  "description": "Forms release changelog and posts a note to each referenced issues after semantic release publishes a new module version",
   "version": "0.0.0-development",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": "https://github.com/bahmutov/github-post-release/issues",

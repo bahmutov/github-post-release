@@ -1,6 +1,6 @@
 # github-post-release
 
-> Post GitHub changelog and close referenced issues after semantic release publishes new module version
+> Forms release changelog and posts a note to each referenced issues after semantic release publishes a new module version
 
 [![NPM][npm-icon] ][npm-url]
 
