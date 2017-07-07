@@ -119,9 +119,15 @@ function githubPostRelease (pluginConfig, config, callback) {
     callback(err)
   }
 
+  const commentingFailed = err => {
+    console.error('😟  commenting on related issues failed')
+    console.error(err)
+  }
+
   const message = `Version ${pkg.version} has been published.`
   getClosedIssues()
     .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
+    .catch(commentingFailed)
     .then(onSuccess, onFailure)
 }
 
