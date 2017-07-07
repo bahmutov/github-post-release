@@ -7,7 +7,7 @@ var parseGithubUrl = require('parse-github-repo-url')
 var debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
 const commitCloses = require('commit-closes')
-const {uniq, partial, identity} = require('ramda')
+const { uniq, partial, identity } = require('ramda')
 const pluralize = require('pluralize')
 
 function commitToIsses (commit) {
@@ -24,8 +24,7 @@ function issuesToCommits (commits) {
     return []
   }
 
-  const closedIssues = commits.map(commitToIsses)
-    .filter(hasIssues)
+  const closedIssues = commits.map(commitToIsses).filter(hasIssues)
   debug('semantic commits close the following issues')
   debug(closedIssues)
   const uniqueIssues = uniq(closedIssues)
@@ -35,8 +34,7 @@ function issuesToCommits (commits) {
 
 // :: -> [issue numbers]
 function getClosedIssues () {
-  return newPublicCommits()
-    .then(issuesToCommits)
+  return newPublicCommits().then(issuesToCommits)
 }
 
 function getGitHub (githubUrl, token) {
@@ -77,12 +75,15 @@ function commentOnIssues (repoUrl, message, debug, issues) {
   const parsed = parseGithubUrl(repoUrl)
   const user = parsed[0]
   const repo = parsed[1]
-  debug('commenting on %d %s: %j',
-    issues.length, pluralize('issues', issues.length), issues)
+  debug(
+    'commenting on %d %s: %j',
+    issues.length,
+    pluralize('issues', issues.length),
+    issues
+  )
 
   const commentPromises = issues.map(number =>
-    createComment({user, repo, number, message})
-    .catch(err => {
+    createComment({ user, repo, number, message }).catch(err => {
       console.error('Could not comment on issue', number)
       console.error(err)
     })
@@ -106,7 +107,7 @@ function githubPostRelease (pluginConfig, config, callback) {
     callback()
   }
 
-  const onFailure = (err) => {
+  const onFailure = err => {
     console.error('🔥  failed with error')
     console.error(err)
     callback(err)
