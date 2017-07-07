@@ -44,7 +44,7 @@ function getGitHubToken () {
   return process.env.GH_TOKEN
 }
 
-function commentOnIssues (repoUrl, message, debug, issues) {
+function commentOnIssues (repoUrl, message, debugMode, issues) {
   if (!issues) {
     return Promise.resolve()
   }
@@ -53,7 +53,9 @@ function commentOnIssues (repoUrl, message, debug, issues) {
     return Promise.resolve()
   }
 
-  const createComment = debug ? identity : getGitHub(repoUrl, getGitHubToken())
+  const createComment = debugMode
+    ? identity
+    : getGitHub(repoUrl, getGitHubToken())
   const parsed = parseGithubUrl(repoUrl)
   const user = parsed[0]
   const repo = parsed[1]
