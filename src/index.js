@@ -30,11 +30,18 @@ function getGitHub (githubUrl, token) {
     protocol = 'https'
   }
 
+  let host = githubConfig.hostname
+  if (host === 'github.com') {
+    // https://github.com/mikedeboer/node-github/issues/544
+    debug('using api.github.com host')
+    host = 'api.github.com'
+  }
+
   const config = {
     version: '3.0.0',
     port: githubConfig.port,
     protocol,
-    host: githubConfig.hostname
+    host
   }
   debug('github config')
   debug(config)
@@ -42,7 +49,7 @@ function getGitHub (githubUrl, token) {
   const github = new GitHubApi(config)
 
   github.authenticate({
-    type: 'oauth',
+    type: 'token',
     token: token
   })
 
