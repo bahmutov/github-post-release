@@ -74,6 +74,13 @@
     "semantic-release": "^6.3.6"
   },
   "dependencies": {
-    "pluralize": "5.0.0"
+    "bluebird": "3.5.0",
+    "commit-closes": "1.0.1",
+    "debug": "2.6.8",
+    "github": "9.2.0",
+    "new-public-commits": "1.0.0",
+    "parse-github-repo-url": "1.4.0",
+    "pluralize": "5.0.0",
+    "ramda": "0.24.1"
   }
 }
