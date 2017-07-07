@@ -6,43 +6,16 @@ const GitHubApi = require('github')
 const parseGithubUrl = require('parse-github-repo-url')
 const debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
-const commitCloses = require('commit-closes')
-const { uniq, partial, identity, is, path, flatten } = require('ramda')
+const { partial, identity, is, path } = require('ramda')
 const pluralize = require('pluralize')
 const join = require('path').join
 const streamToPromise = require('stream-to-promise')
 const changelog = require('conventional-changelog')
-
-function commitToIsses (commit) {
-  return commitCloses(commit.message, commit.body)
-}
-
-function hasIssues (issues) {
-  return issues.length > 0
-}
-
-function issuesToCommits (commits) {
-  debug(
-    'have %d semantic %s',
-    commits.length,
-    pluralize('commit', commits.length)
-  )
-  if (!commits.length) {
-    return []
-  }
-  debug(commits)
-
-  const closedIssues = flatten(commits.map(commitToIsses).filter(hasIssues))
-  debug('semantic commits close the following issues')
-  debug(closedIssues)
-  const uniqueIssues = uniq(closedIssues)
-  debug('unique closed issues', uniqueIssues)
-  return uniqueIssues
-}
+const { commitsToIssues } = require('./utils')
 
 // :: -> [issue numbers]
 function getClosedIssues () {
-  return newPublicCommits().then(issuesToCommits)
+  return newPublicCommits().then(commitsToIssues)
 }
 
 function getGitHub (githubUrl, token) {

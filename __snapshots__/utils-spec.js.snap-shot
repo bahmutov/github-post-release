@@ -1,0 +1,10 @@
+exports['finds fixed issue in 1 commit 1'] = [
+  2
+]
+
+exports['finds several closed issues 1'] = [
+  2,
+  4,
+  3
+]
+
