@@ -101,7 +101,7 @@ function commentOnIssues (repoUrl, message, debug, issues) {
 // should call "callback" function with (err, changelog)
 function githubPostRelease (pluginConfig, config, callback) {
   // debug('custom plugin config', pluginConfig)
-  debug('config parameter', config)
+  // debug('config parameter', config)
   const pkg = config.pkg
   const repoUrl = pkg.repository.url
 
