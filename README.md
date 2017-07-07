@@ -8,15 +8,44 @@
 [![semantic-release][semantic-image] ][semantic-url]
 [![js-standard-style][standard-image]][standard-url]
 
-## Install
+## Problem
+
+When publishing new version of your NPM package, it would be nice to comment
+on each GitHub issue referenced by the semantic commits, letting the user
+know that the fix / feature was published.
+
+This module works as a [semantic-release][sem] [generate notes][gen] plugin.
+It both comments on referenced issues and returns the changelog to be
+posted on GitHub
+
+It was inspired by [semantic-release-github-notifier][notifier],
+[release-notes-generator][notes-generator] and uses
+[conventional-changelog][conventional-changelog] to generate changelog text
+after commenting on issues.
+
+[sem]: https://github.com/semantic-release/semantic-release
+[gen]: https://github.com/semantic-release/semantic-release#generatenotes
+[notifier]: https://github.com/gitter-badger/semantic-release-github-notifier
+[notes-generator]: https://github.com/semantic-release/release-notes-generator/
+[conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog#readme
+
+## Install and use
 
 Requires [Node](https://nodejs.org/en/) version 6 or above.
 
 ```sh
-npm install --save github-post-release
+npm install --save-dev github-post-release
 ```
 
-## Use
+Then tell `semantic-release` to use this module as `generateNotes` plugin.
+
+```json
+{
+  "release": {
+    "generateNotes": "github-post-release"
+  }
+}
+```
 
 ## Debug
 
