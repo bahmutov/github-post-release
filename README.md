@@ -17,6 +17,7 @@ know that the fix / feature was published.
 This module works as a [semantic-release][sem] [generate notes][gen] plugin.
 It both comments on referenced issues and returns the changelog to be
 posted on GitHub. Each issue will get a comment like this
+([example](https://github.com/bahmutov/github-post-release/issues/8#issuecomment-313786374))
 
 ![Typical comment](images/comment.png)
 
