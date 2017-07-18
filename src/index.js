@@ -6,16 +6,16 @@ const GitHubApi = require('github')
 const parseGithubUrl = require('parse-github-repo-url')
 const debug = require('debug')('github-post-release')
 const newPublicCommits = require('new-public-commits').newPublicCommits
-const { partial, identity, is, path, isEmpty } = require('ramda')
+const R = require('ramda')
 const pluralize = require('pluralize')
 const join = require('path').join
 const streamToPromise = require('stream-to-promise')
 const changelog = require('conventional-changelog')
-const { commitsToIssues, formMessage } = require('./utils')
+const utils = require('./utils')
 
 // :: -> [issue numbers]
 function getClosedIssues () {
-  return newPublicCommits().then(commitsToIssues)
+  return newPublicCommits().then(utils.commitsToIssues)
 }
 
 function getGitHub (githubUrl, token) {
@@ -65,13 +65,13 @@ function commentOnIssues (repoUrl, message, debugMode, issues) {
   if (!issues) {
     return Promise.resolve()
   }
-  if (isEmpty(issues)) {
+  if (R.isEmpty(issues)) {
     debug('no issues to comment on')
     return Promise.resolve()
   }
 
   const createComment = debugMode
-    ? identity
+    ? R.identity
     : getGitHub(repoUrl, getGitHubToken())
   const parsed = parseGithubUrl(repoUrl)
   const owner = parsed[0]
@@ -143,10 +143,10 @@ function githubPostRelease (pluginConfig, config, callback) {
 
   const owner = parsedRepo[0]
   const repo = parsedRepo[1]
-  const message = formMessage(owner, repo, pkg.name, pkg.version)
+  const message = utils.formMessage(owner, repo, pkg.name, pkg.version)
 
   getClosedIssues()
-    .then(partial(commentOnIssues, [repoUrl, message, config.debug]))
+    .then(R.partial(commentOnIssues, [repoUrl, message, config.debug]))
     .catch(commentingFailed)
     .then(generateChangeLog)
     .then(onSuccess, onFailure)
@@ -157,9 +157,9 @@ module.exports = githubPostRelease
 if (!module.parent) {
   console.log('demo run')
   const pkg = require(join(__dirname, '..', 'package.json'))
-  const generateNotes = path(['release', 'generateNotes'])(pkg)
-  const config = is(Object, generateNotes) ? generateNotes : {}
-  githubPostRelease(config, { pkg }, (err, changelog) => {
+  const generateNotes = R.path(['release', 'generateNotes'])(pkg)
+  const config = R.is(Object, generateNotes) ? generateNotes : {}
+  githubPostRelease(config, { pkg: pkg }, (err, changelog) => {
     console.log('finished with')
     console.log('err?', err)
     console.log('changelog\n' + changelog)

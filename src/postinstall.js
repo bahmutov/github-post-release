@@ -14,11 +14,11 @@ if (!amIaDependency() && !isForced) {
 
 debug('installing this module as a dependency')
 
-const { join } = require('path')
-const { writeFileSync } = require('fs')
+const path = require('path')
+const fs = require('fs')
 
 function clientPackageJsonFilename () {
-  return join(process.cwd(), '..', '..', 'package.json')
+  return path.join(process.cwd(), '..', '..', 'package.json')
 }
 
 function alreadyInstalled () {
@@ -41,7 +41,7 @@ function addPlugin () {
   }
   pkg.release.generateNotes = 'github-post-release'
   const text = JSON.stringify(pkg, null, 2) + '\n'
-  writeFileSync(filename, text, 'utf8')
+  fs.writeFileSync(filename, text, 'utf8')
   console.log('✅  set generate notes plugin in', filename)
 }
 

@@ -4,32 +4,34 @@
 const snapshot = require('snap-shot')
 
 describe('utils', () => {
-  describe('formReleaseUrl', () => {
-    const { formReleaseUrl } = require('./utils')
+  describe('utils.', () => {
+    const utils = require('./utils')
 
     it('forms url', () => {
-      snapshot(formReleaseUrl('bahmutov', 'github-post-release', 'v1.4.0'))
+      snapshot(
+        utils.formReleaseUrl('bahmutov', 'github-post-release', 'v1.4.0')
+      )
     })
   })
 
   describe('formReleaseText', () => {
-    const { formReleaseText } = require('./utils')
+    const utils = require('./utils')
 
     it('forms release text', () => {
-      snapshot(formReleaseText('github-post-release', 'v1.4.0'))
+      snapshot(utils.formReleaseText('github-post-release', 'v1.4.0'))
     })
   })
 
   describe('formMessage', () => {
-    const { formMessage } = require('./utils')
+    const utils = require('./utils')
 
     it('forms full message', () => {
-      snapshot(formMessage('user', 'repo', 'my-module-name', '1.4.0'))
+      snapshot(utils.formMessage('user', 'repo', 'my-module-name', '1.4.0'))
     })
   })
 
   describe('commitsToIssues', () => {
-    const { commitsToIssues } = require('./utils')
+    const utils = require('./utils')
 
     it('finds fixed issue in 1 commit', () => {
       const commits = [
@@ -39,7 +41,7 @@ describe('utils', () => {
           body: ''
         }
       ]
-      const issues = commitsToIssues(commits)
+      const issues = utils.commitsToIssues(commits)
       snapshot(issues)
     })
 
@@ -56,7 +58,7 @@ describe('utils', () => {
           body: 'closed #2, #3'
         }
       ]
-      const issues = commitsToIssues(commits)
+      const issues = utils.commitsToIssues(commits)
       snapshot(issues)
     })
   })
