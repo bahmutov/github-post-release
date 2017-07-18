@@ -6,7 +6,6 @@ notifications:
   email: true
 node_js:
   - '6'
-  - '4'
 before_script:
   - npm prune
 script:
