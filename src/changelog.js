@@ -4,10 +4,19 @@ const newPublicCommits = require('new-public-commits').newPublicCommits
 const { stripIndent } = require('common-tags')
 const la = require('lazy-ass')
 const is = require('check-more-types')
+const simple = require('simple-commit-message')
+
+const toMessages = R.map(R.prop('message'))
+
+function groupCommits (commits) {
+  const parsed = toMessages(commits).map(simple.parse).filter(is.defined)
+  const grouped = R.groupBy(R.prop('type'), parsed)
+  return grouped
+}
 
 function commitsToString (commits) {
   const filtered = leavePublic(commits)
-  const messages = R.map(R.prop('message'))(filtered)
+  const messages = toMessages(filtered)
   return messages.join('\n')
 }
 
@@ -33,4 +42,9 @@ function formChangelog (version) {
   )
 }
 
-module.exports = { formChangelog, versionAndCommitsToLog, commitsToString }
+module.exports = {
+  formChangelog,
+  versionAndCommitsToLog,
+  commitsToString,
+  groupCommits
+}

@@ -5,7 +5,11 @@ const is = require('check-more-types')
 const snapshot = require('snap-shot')
 
 /* global describe, it */
-const { commitsToString, versionAndCommitsToLog } = require('./changelog')
+const {
+  commitsToString,
+  versionAndCommitsToLog,
+  groupCommits
+} = require('./changelog')
 
 const commits = [
   {
@@ -16,6 +20,9 @@ const commits = [
   },
   {
     message: 'limit builds on CI to Node 6 (dfe6bd5)'
+  },
+  {
+    message: 'fix(doc): updated documentation'
   }
 ]
 
@@ -39,5 +46,12 @@ describe('full changelog message', () => {
     const log = versionAndCommitsToLog(version, commits)
     snapshot(log)
     MockDate.reset()
+  })
+})
+
+describe('group commits by type', () => {
+  it('groups', () => {
+    const groups = groupCommits(commits)
+    snapshot(groups)
   })
 })
