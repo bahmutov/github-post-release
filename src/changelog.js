@@ -36,20 +36,30 @@ function commitSubjectList (commits) {
   return commits.map(commitString).join('\n')
 }
 
+function scopeCommits (commits) {
+  const grouped = R.groupBy(R.prop('scope'))(commits)
+  let s = ''
+  Object.keys(grouped).forEach(scope => {
+    const scopedCommits = grouped[scope]
+    s += '### ' + scope + '\n'
+    s += commitSubjectList(scopedCommits) + '\n'
+  })
+  return s
+}
+
 function commitsToString (commits) {
   const filtered = leavePublic(commits)
   const grouped = groupCommits(filtered)
   let msg = ''
 
   if (is.array(grouped.major)) {
-    msg +=
-      '## Breaking major changes 🔥\n' + commitSubjectList(grouped.major) + '\n'
+    msg += '## Breaking major changes 🔥\n' + scopeCommits(grouped.major) + '\n'
   }
   if (is.array(grouped.feat)) {
-    msg += '## New features 👍\n' + commitSubjectList(grouped.feat) + '\n'
+    msg += '## New features 👍\n' + scopeCommits(grouped.feat) + '\n'
   }
   if (is.array(grouped.fix)) {
-    msg += '## Bug fixes ✅\n' + commitSubjectList(grouped.fix) + '\n'
+    msg += '## Bug fixes ✅\n' + scopeCommits(grouped.fix) + '\n'
   }
   return msg
 }
