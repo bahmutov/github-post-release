@@ -27,19 +27,9 @@ function groupCommits (commits) {
   return grouped
 }
 
-const shortCommit = s => s.substr(0, 8)
-
 function commitString (commit) {
   la(isCommit(commit), 'invalid commit format', commit)
-  return (
-    '* ' +
-    commit.subject +
-    ' ([' +
-    shortCommit(commit.id) +
-    '](#' +
-    commit.id +
-    '))'
-  )
+  return '* ' + commit.subject + ' (' + commit.id + ')'
 }
 
 function commitSubjectList (commits) {
