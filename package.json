@@ -96,6 +96,7 @@
     "new-public-commits": "1.1.2",
     "parse-github-repo-url": "1.4.0",
     "pluralize": "5.0.0",
-    "ramda": "0.24.1"
+    "ramda": "0.24.1",
+    "simple-commit-message": "3.2.0"
   }
 }

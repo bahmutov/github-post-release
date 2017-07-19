@@ -1,6 +1,6 @@
-exports['forms changelog 1'] = "feat(streams): output stdout and stderr, fixes #1, #2\nfix(doc): updated documentation"
+exports['forms changelog 1'] = "## New features 👍\n* output stdout and stderr, fixes #1, #2\n## Bug fixes ✅\n* updated documentation\n"
 
-exports['version and public commits 1'] = "<a name=\"1.0.2\"></a>\n# 1.0.2 (2000-04-20)\nfeat(streams): output stdout and stderr, fixes #1, #2\nfix(doc): updated documentation"
+exports['version and public commits 1'] = "<a name=\"1.0.2\"></a>\n# 1.0.2 (2000-04-20)\n## New features 👍\n* output stdout and stderr, fixes #1, #2\n## Bug fixes ✅\n* updated documentation\n"
 
 exports['groups 1'] = {
   "feat": [

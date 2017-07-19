@@ -14,10 +14,26 @@ function groupCommits (commits) {
   return grouped
 }
 
+function commitSubjectList (commits) {
+  return commits.map(R.prop('subject')).map(s => '* ' + s).join('\n')
+}
+
 function commitsToString (commits) {
   const filtered = leavePublic(commits)
-  const messages = toMessages(filtered)
-  return messages.join('\n')
+  const grouped = groupCommits(filtered)
+  let msg = ''
+
+  if (is.array(grouped.major)) {
+    msg +=
+      '## Breaking major changes 🔥\n' + commitSubjectList(grouped.major) + '\n'
+  }
+  if (is.array(grouped.feat)) {
+    msg += '## New features 👍\n' + commitSubjectList(grouped.feat) + '\n'
+  }
+  if (is.array(grouped.fix)) {
+    msg += '## Bug fixes ✅\n' + commitSubjectList(grouped.fix) + '\n'
+  }
+  return msg
 }
 
 function getDateString () {
