@@ -9,7 +9,7 @@ const R = require('ramda')
 const githubPostRelease = require('.')
 const pkg = require(join(__dirname, '..', 'package.json'))
 
-describe.only('github-post-release', () => {
+describe('github-post-release', () => {
   it('is a function', () => {
     la(is.fn(githubPostRelease))
   })

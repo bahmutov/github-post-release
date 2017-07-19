@@ -9,9 +9,8 @@ const newPublicCommits = require('new-public-commits').newPublicCommits
 const R = require('ramda')
 const pluralize = require('pluralize')
 const join = require('path').join
-const streamToPromise = require('stream-to-promise')
-const changelog = require('conventional-changelog')
 const utils = require('./utils')
+const formChangelog = require('./changelog').formChangelog
 
 // :: -> [issue numbers]
 function getClosedIssues () {
@@ -131,14 +130,8 @@ function githubPostRelease (pluginConfig, config, callback) {
   }
 
   const generateChangeLog = () => {
-    debug('generate changelog')
-    return streamToPromise(
-      changelog({
-        version: pkg.version,
-        repository: parsedRepo,
-        fail: false
-      })
-    ).then(buffer => buffer.toString())
+    debug('generate changelog for release version %s', pkg.version)
+    return formChangelog(pkg.version)
   }
 
   const owner = parsedRepo[0]
