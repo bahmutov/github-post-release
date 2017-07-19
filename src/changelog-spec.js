@@ -2,6 +2,7 @@
 
 const la = require('lazy-ass')
 const is = require('check-more-types')
+const snapshot = require('snap-shot')
 
 /* global describe, it */
 const { commitsToString, versionAndCommitsToLog } = require('./changelog')
@@ -25,7 +26,7 @@ describe('commits to changelog', () => {
 
   it('forms changelog', () => {
     const log = commitsToString(commits)
-    console.log(log)
+    snapshot(log)
   })
 })
 
@@ -33,7 +34,10 @@ describe('full changelog message', () => {
   const version = '1.0.2'
 
   it('version and public commits', () => {
+    const MockDate = require('mockdate')
+    MockDate.set('4/20/2000')
     const log = versionAndCommitsToLog(version, commits)
-    console.log(log)
+    snapshot(log)
+    MockDate.reset()
   })
 })

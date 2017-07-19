@@ -7,7 +7,8 @@ const is = require('check-more-types')
 
 function commitsToString (commits) {
   const filtered = leavePublic(commits)
-  return R.map(R.prop('message'))(filtered).join('\n')
+  const messages = R.map(R.prop('message'))(filtered)
+  return messages.join('\n')
 }
 
 function getDateString () {

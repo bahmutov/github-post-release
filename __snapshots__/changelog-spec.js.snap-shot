@@ -1,0 +1,4 @@
+exports['forms changelog 1'] = "feat(streams): output stdout and stderr, fixes #1, #2"
+
+exports['version and public commits 1'] = "<a name=\"1.0.2\"></a>\n# 1.0.2 (2000-04-20)\nfeat(streams): output stdout and stderr, fixes #1, #2"
+
