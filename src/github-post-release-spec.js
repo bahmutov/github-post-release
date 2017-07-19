@@ -15,7 +15,9 @@ describe('github-post-release', () => {
   })
 
   it('forms changelog', done => {
-    const config = {}
+    const config = {
+      debug: true
+    }
     const json = R.clone(pkg)
     json.version = '1000.0.0'
 

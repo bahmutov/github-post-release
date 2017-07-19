@@ -110,6 +110,7 @@ function githubPostRelease (pluginConfig, config, callback) {
 
   debug('published version %s', pkg.version)
   debug('repo url %s', repoUrl)
+  debug('debug mode?', config.debug)
 
   const onSuccess = changelog => {
     debug('✅  all done, with message: %s', message)
