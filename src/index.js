@@ -70,7 +70,7 @@ function commentOnIssues (repoUrl, message, debugMode, issues) {
   }
 
   const createComment = debugMode
-    ? R.identity
+    ? () => Promise.resolve()
     : getGitHub(repoUrl, getGitHubToken())
   const parsed = parseGithubUrl(repoUrl)
   const owner = parsed[0]
