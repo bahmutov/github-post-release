@@ -11,18 +11,23 @@ const {
   groupCommits
 } = require('./changelog')
 
+const commit = 'aaaabbbbccccddddeeeeffff1111222233334444'
 const commits = [
   {
-    message: 'feat(streams): output stdout and stderr, fixes #1, #2'
+    message: 'feat(streams): output stdout and stderr, fixes #1, #2',
+    id: commit
   },
   {
-    message: 'initial (6f272d6)'
+    message: 'initial (6f272d6)',
+    id: commit
   },
   {
-    message: 'limit builds on CI to Node 6 (dfe6bd5)'
+    message: 'limit builds on CI to Node 6 (dfe6bd5)',
+    id: commit
   },
   {
-    message: 'fix(doc): updated documentation'
+    message: 'fix(doc): updated documentation',
+    id: commit
   }
 ]
 

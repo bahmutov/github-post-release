@@ -8,7 +8,8 @@ exports['groups 1'] = {
       "firstLine": "feat(streams): output stdout and stderr, fixes #1, #2",
       "type": "feat",
       "scope": "streams",
-      "subject": "output stdout and stderr, fixes #1, #2"
+      "subject": "output stdout and stderr, fixes #1, #2",
+      "id": "aaaabbbbccccddddeeeeffff1111222233334444"
     }
   ],
   "fix": [
@@ -16,7 +17,8 @@ exports['groups 1'] = {
       "firstLine": "fix(doc): updated documentation",
       "type": "fix",
       "scope": "doc",
-      "subject": "updated documentation"
+      "subject": "updated documentation",
+      "id": "aaaabbbbccccddddeeeeffff1111222233334444"
     }
   ]
 }

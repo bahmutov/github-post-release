@@ -6,16 +6,36 @@ const la = require('lazy-ass')
 const is = require('check-more-types')
 const simple = require('simple-commit-message')
 
-const toMessages = R.map(R.prop('message'))
+// const toMessages = R.map(R.prop('message'))
+
+const isCommit = is.schema({
+  id: is.commitId,
+  subject: is.unemptyString,
+  type: is.unemptyString,
+  scope: is.unemptyString
+})
 
 function groupCommits (commits) {
-  const parsed = toMessages(commits).map(simple.parse).filter(is.defined)
+  const parsed = commits
+    .map(c => {
+      const p = simple.parse(c.message)
+      if (p) {
+        p.id = c.id
+      }
+      return p
+    })
+    .filter(is.defined)
   const grouped = R.groupBy(R.prop('type'), parsed)
   return grouped
 }
 
+function commitString (commit) {
+  la(isCommit(commit), 'invalid commit format', commit)
+  return '* ' + commit.subject
+}
+
 function commitSubjectList (commits) {
-  return commits.map(R.prop('subject')).map(s => '* ' + s).join('\n')
+  return commits.map(commitString).join('\n')
 }
 
 function commitsToString (commits) {
