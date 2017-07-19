@@ -15,13 +15,15 @@ describe('github-post-release', () => {
   })
 
   it('forms changelog', done => {
-    const config = {
-      debug: true
-    }
+    const pluginConfig = {}
     const json = R.clone(pkg)
     json.version = '1000.0.0'
+    const config = {
+      pkg: json,
+      debug: true
+    }
 
-    githubPostRelease(config, { pkg: json }, (err, log) => {
+    githubPostRelease(pluginConfig, config, (err, log) => {
       la(!err, 'there was an error', err)
       la(is.unemptyString(log), 'missing log', log)
       console.log(log)
