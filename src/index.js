@@ -10,7 +10,7 @@ const R = require('ramda')
 const pluralize = require('pluralize')
 const join = require('path').join
 const utils = require('./utils')
-const formChangelog = require('./changelog').formChangelog
+const formChangelog = require('simple-changelog')
 
 // :: -> [issue numbers]
 function getClosedIssues () {
