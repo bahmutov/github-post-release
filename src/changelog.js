@@ -6,8 +6,6 @@ const la = require('lazy-ass')
 const is = require('check-more-types')
 const simple = require('simple-commit-message')
 
-// const toMessages = R.map(R.prop('message'))
-
 const isCommit = is.schema({
   id: is.commitId,
   subject: is.unemptyString,
@@ -29,9 +27,19 @@ function groupCommits (commits) {
   return grouped
 }
 
+const shortCommit = s => s.substr(0, 8)
+
 function commitString (commit) {
   la(isCommit(commit), 'invalid commit format', commit)
-  return '* ' + commit.subject
+  return (
+    '* ' +
+    commit.subject +
+    ' ([' +
+    shortCommit(commit.id) +
+    '](#' +
+    commit.id +
+    '))'
+  )
 }
 
 function commitSubjectList (commits) {
