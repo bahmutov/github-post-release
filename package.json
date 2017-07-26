@@ -53,7 +53,7 @@
   },
   "scripts": {
     "ban": "ban",
-    "deps": "deps-ok && dependency-check --no-dev .",
+    "deps": "deps-ok && dependency-check --no-dev . --entry src/postinstall.js",
     "issues": "git-issues",
     "license": "license-checker --production --onlyunknown --csv",
     "pretty": "prettier-standard 'src/*.js'",
