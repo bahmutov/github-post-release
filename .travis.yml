@@ -12,6 +12,7 @@ script:
   - git --version
   - git tag --sort version:refname || true
   - git tag
+  - ./next-update-travis.sh
   - npm test
 after_success:
   - DEBUG=github-post-release npm run semantic-release
