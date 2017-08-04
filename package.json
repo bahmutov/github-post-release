@@ -49,7 +49,10 @@
     "url": "https://github.com/bahmutov/github-post-release.git"
   },
   "release": {
-    "generateNotes": ".",
+    "generateNotes": {
+      "path": ".",
+      "type": "npm"
+    },
     "analyzeCommits": "simple-commit-message"
   },
   "scripts": {

@@ -26,7 +26,21 @@ describe('utils', () => {
     const utils = require('./utils')
 
     it('forms full message', () => {
-      snapshot(utils.formMessage('user', 'repo', 'my-module-name', '1.4.0'))
+      snapshot(
+        utils.formMessage('npm', 'user', 'repo', 'my-module-name', '1.4.0')
+      )
+    })
+
+    it('forms full publish message', () => {
+      snapshot(
+        utils.formMessage('publish', 'user', 'repo', 'my-module-name', '1.4.0')
+      )
+    })
+
+    it('forms full deploy message', () => {
+      snapshot(
+        utils.formMessage('deploy', 'user', 'repo', 'my-module-name', '1.4.0')
+      )
     })
   })
 

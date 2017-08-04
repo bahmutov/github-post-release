@@ -11,6 +11,8 @@ const pluralize = require('pluralize')
 const join = require('path').join
 const utils = require('./utils')
 const formChangelog = require('simple-changelog')
+const la = require('lazy-ass')
+const is = require('check-more-types')
 
 // :: -> [issue numbers]
 function getClosedIssues () {
@@ -104,6 +106,19 @@ function commentOnIssues (repoUrl, message, debugMode, issues) {
 function githubPostRelease (pluginConfig, config, callback) {
   // debug('custom plugin config', pluginConfig)
   // debug('config parameter', config)
+
+  // normalize message type
+  let messageType = pluginConfig.type || 'npm'
+  if (messageType === 'publish') {
+    messageType = 'npm'
+  }
+  la(
+    is.unemptyString(messageType),
+    'missing message type to form',
+    pluginConfig
+  )
+  debug('message type "%s"', messageType)
+
   const pkg = config.pkg
   const repoUrl = pkg.repository.url
   const parsedRepo = parseGithubUrl(repoUrl)
@@ -113,7 +128,8 @@ function githubPostRelease (pluginConfig, config, callback) {
   debug('debug mode?', config.debug)
 
   const onSuccess = changelog => {
-    debug('✅  all done, with message: %s', message)
+    debug('✅  all done, with issue message:')
+    debug(message)
     debug('changelog:')
     debug(changelog)
     callback(null, changelog)
@@ -137,7 +153,13 @@ function githubPostRelease (pluginConfig, config, callback) {
 
   const owner = parsedRepo[0]
   const repo = parsedRepo[1]
-  const message = utils.formMessage(owner, repo, pkg.name, pkg.version)
+  const message = utils.formMessage(
+    messageType,
+    owner,
+    repo,
+    pkg.name,
+    pkg.version
+  )
 
   getClosedIssues()
     .then(R.partial(commentOnIssues, [repoUrl, message, config.debug]))
@@ -153,6 +175,9 @@ if (!module.parent) {
   const pkg = require(join(__dirname, '..', 'package.json'))
   const generateNotes = R.path(['release', 'generateNotes'])(pkg)
   const config = R.is(Object, generateNotes) ? generateNotes : {}
+  debug('config')
+  debug(config)
+
   githubPostRelease(config, { pkg: pkg }, (err, changelog) => {
     console.log('finished with')
     console.log('err?', err)

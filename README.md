@@ -44,6 +44,26 @@ The `postinstall` script will automatically set this module to be the
 }
 ```
 
+## Message types
+
+By default, the output message for issues will be
+"New version has been published to NPM ...". This might not match other
+scenarios when this plugin can be used. For example if you deploy a website
+and publish release notes to GitHub, you might like different text that does
+not mention NPM. There are two built-in message types: "npm", "deploy" and you
+can pick on to generate by configuring this plugin like this in `package.json`
+
+```json
+{
+  "release": {
+    "generateNotes": {
+      "path": "github-post-release",
+      "type": "deploy"
+    }
+  }
+}
+```
+
 ## Debug
 
 To see more log messages, run this plugin with `DEBUG=github-post-release`
