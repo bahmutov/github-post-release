@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "am-i-a-dependency": "1.1.2",
-    "bluebird": "3.5.0",
+    "bluebird": "3.5.1",
     "check-more-types": "2.24.0",
     "commit-closes": "1.0.1",
     "common-tags": "1.4.0",
